@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Life+ — Профіль</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+  <main class="app profile-page">
+    <header class="topbar">
+      <button class="back-btn" id="backBtn">‹</button>
+      <div class="page-title">Профіль</div>
+      <div class="top-spacer"></div>
+    </header>
+
+    <section class="profile-hero">
+      <div class="avatar">👤</div>
+      <div class="profile-name" id="profileName">Гравець</div>
+      <div class="profile-level">Рівень <b id="profileLevel">1</b></div>
+    </section>
+
+    <section class="profile-balance">
+      <span>Баланс</span>
+      <strong id="profileBalance">₴1 000</strong>
+    </section>
+
+    <section class="info-card">
+      <div class="section-heading">📌 Поточний стан</div>
+      <div class="info-row"><span>🏠 Житло</span><b>Кімната</b></div>
+      <div class="info-row"><span>💼 Робота</span><b>Без роботи</b></div>
+      <div class="info-row"><span>🚗 Транспорт</span><b>Немає</b></div>
+      <div class="info-row"><span>🏢 Бізнеси</span><b>0</b></div>
+    </section>
+
+    <section class="info-card">
+      <div class="section-heading">📊 Статистика</div>
+      <div class="stats-grid">
+        <div class="big-stat"><strong>1</strong><span>Ігровий день</span></div>
+        <div class="big-stat"><strong>0</strong><span>Відпрацьовано годин</span></div>
+        <div class="big-stat"><strong>0</strong><span>Куплено авто</span></div>
+        <div class="big-stat"><strong>0</strong><span>Бізнесів</span></div>
+      </div>
+    </section>
+
+    <section class="info-card progress-card">
+      <div class="progress-top"><span>Досвід</span><b>0 / 100 XP</b></div>
+      <div class="progress"><div class="progress-fill" style="width:0%"></div></div>
+      <small>Рівень підвищуватиметься у міру розвитку персонажа.</small>
+    </section>
+
+    <footer>Life+ v0.1.0</footer>
+  </main>
+  <script src="profile.js"></script>
+</body>
+</html>
