@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Life+ — Робота</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <button class="icon-btn" id="backBtn" aria-label="Назад">‹</button>
+      <div class="page-title">💼 Робота</div>
+      <div style="width:44px"></div>
+    </header>
+
+    <section class="info-card">
+      <div class="section-title">Поточна робота</div>
+      <div id="currentJob" class="job-current">
+        <b>Без роботи</b>
+        <small>Обери професію нижче, щоб почати заробляти.</small>
+      </div>
+    </section>
+
+    <section class="info-card">
+      <div class="section-title">Доступні професії</div>
+
+      <article class="job-card">
+        <div class="job-icon">📦</div>
+        <div class="job-main">
+          <b>Працівник складу</b>
+          <small>Початкова робота • без вимог</small>
+          <div class="job-meta"><span>💰 ₴700 / зміна</span><span>⏱️ 1 година</span></div>
+        </div>
+        <button class="job-btn" data-job="warehouse" data-name="Працівник складу" data-pay="700">Обрати</button>
+      </article>
+
+      <article class="job-card">
+        <div class="job-icon">🛒</div>
+        <div class="job-main">
+          <b>Касир</b>
+          <small>Потрібен 1 рівень</small>
+          <div class="job-meta"><span>💰 ₴800 / зміна</span><span>⏱️ 1 година</span></div>
+        </div>
+        <button class="job-btn" data-job="cashier" data-name="Касир" data-pay="800">Обрати</button>
+      </article>
+
+      <article class="job-card">
+        <div class="job-icon">🚕</div>
+        <div class="job-main">
+          <b>Водій таксі</b>
+          <small>Потрібен транспорт • буде доступно пізніше</small>
+          <div class="job-meta"><span>💰 ₴1 100 / зміна</span><span>⏱️ 1 година</span></div>
+        </div>
+        <button class="job-btn disabled" disabled>Закрито</button>
+      </article>
+    </section>
+
+    <section class="info-card">
+      <div class="section-title">📈 Досвід роботи</div>
+      <div class="xp-line"><span id="workXpText">0 / 100 XP</span><b>0%</b></div>
+      <div class="xp-bar"><div style="width:0%"></div></div>
+      <small class="muted" style="display:block;margin-top:8px;font-size:10px">
+        Досвід і підвищення зарплати будуть розвиватися далі.
+      </small>
+    </section>
+
+    <footer>Life+ v0.2.0</footer>
+  </main>
+  <script src="work.js"></script>
+</body>
+</html>

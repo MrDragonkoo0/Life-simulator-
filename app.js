@@ -51,3 +51,9 @@ document.querySelectorAll('.menu-button[data-page="profile"]').forEach(button =>
         window.location.href = "profile.html";
     });
 });
+
+document.querySelectorAll('.menu-button[data-page="work"]').forEach(button => {
+  button.addEventListener("click", () => {
+    window.location.href = "work.html";
+  });
+});
