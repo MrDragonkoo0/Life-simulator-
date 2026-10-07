@@ -64,27 +64,25 @@ document.querySelectorAll('.menu-button[data-page="housing"]').forEach(button =>
   });
 });
 
-document.querySelectorAll('.menu-button[data-page="needs"]').forEach(button => {
-  button.addEventListener("click", () => {
-    window.location.href = "needs.html";
-  });
 });
 
 
-// v0.4.1 navigation fix
-document.querySelectorAll('[data-section="profile"]').forEach(button => {
-  button.onclick = () => { window.location.href = "profile.html"; };
-});
 
-document.querySelectorAll('[data-section="work"]').forEach(button => {
-  button.onclick = () => { window.location.href = "work.html"; };
-});
+// Life+ v0.4.2 — stable navigation
+document.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-section]");
+  if (!button) return;
 
-document.querySelectorAll('[data-section="housing"]').forEach(button => {
-  button.onclick = () => { window.location.href = "housing.html"; };
-});
+  const section = button.dataset.section;
+  const pages = {
+    profile: "profile.html",
+    work: "work.html",
+    housing: "housing.html"
+  };
 
-// Потреби — доступні з головного меню через цей розділ.
-document.querySelectorAll('[data-section="needs"]').forEach(button => {
-  button.onclick = () => { window.location.href = "needs.html"; };
-});
+  if (pages[section]) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    window.location.href = pages[section];
+  }
+}, true);
