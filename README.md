@@ -1,18 +1,8 @@
-# Life+ v0.1.0 — Profile
+# Life+ v0.5.0 — Core Structure
 
-У цій версії додано повноцінний екран профілю та перехід із головного меню.
-
-Файли:
-- index.html — головне меню
-- profile.html — профіль гравця
-- style.css — спільний дизайн
-- app.js — логіка головного меню
-- profile.js — логіка профілю
-
-Дані гравця поки тимчасові. Базу даних Railway на цьому етапі не змінюємо.
-
-Наступні великі системи:
-1. Робота
-2. Реальний таймер ігрового часу
-3. Житло
-4. Економіка та база даних
+- One index.html application shell.
+- Existing visual design preserved.
+- Profile, Work, Housing and Shop/Needs are rendered inside the same page.
+- Section logic lives in pages/*.js.
+- No navigation to separate HTML pages.
+- Main menu buttons that are not implemented yet show the existing development toast.
