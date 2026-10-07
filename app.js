@@ -44,3 +44,8 @@ document.querySelectorAll(".menu-button").forEach(button => {
 document.getElementById("notifications").addEventListener("click", () => {
     showToast("Нових сповіщень немає");
 });
+
+\n// Profile navigation added in v0.1.0
+document.querySelectorAll('[data-section="profile"]').forEach(btn => {
+  btn.addEventListener('click', () => { window.location.href = 'profile.html'; });
+});
