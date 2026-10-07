@@ -69,3 +69,22 @@ document.querySelectorAll('.menu-button[data-page="needs"]').forEach(button => {
     window.location.href = "needs.html";
   });
 });
+
+
+// v0.4.1 navigation fix
+document.querySelectorAll('[data-section="profile"]').forEach(button => {
+  button.onclick = () => { window.location.href = "profile.html"; };
+});
+
+document.querySelectorAll('[data-section="work"]').forEach(button => {
+  button.onclick = () => { window.location.href = "work.html"; };
+});
+
+document.querySelectorAll('[data-section="housing"]').forEach(button => {
+  button.onclick = () => { window.location.href = "housing.html"; };
+});
+
+// Потреби — доступні з головного меню через цей розділ.
+document.querySelectorAll('[data-section="needs"]').forEach(button => {
+  button.onclick = () => { window.location.href = "needs.html"; };
+});
