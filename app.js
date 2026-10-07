@@ -63,3 +63,9 @@ document.querySelectorAll('.menu-button[data-page="housing"]').forEach(button =>
     window.location.href = "housing.html";
   });
 });
+
+document.querySelectorAll('.menu-button[data-page="needs"]').forEach(button => {
+  button.addEventListener("click", () => {
+    window.location.href = "needs.html";
+  });
+});
