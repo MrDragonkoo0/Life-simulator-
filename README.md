@@ -1,8 +1,8 @@
-# Life+ v0.5.0 — Core Structure
+Life+ v0.5.1 — Telegram WebView Fix
 
 - One index.html application shell.
-- Existing visual design preserved.
-- Profile, Work, Housing and Shop/Needs are rendered inside the same page.
-- Section logic lives in pages/*.js.
-- No navigation to separate HTML pages.
-- Main menu buttons that are not implemented yet show the existing development toast.
+- Existing main-menu design preserved.
+- Removed ES module imports that could fail inside Telegram WebView.
+- All current screens are handled from one app.js.
+- Profile, Work, Housing and Shop work without separate HTML pages.
+- Main menu still contains exactly the approved 10 buttons.
