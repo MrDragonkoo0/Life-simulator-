@@ -390,3 +390,13 @@ button {
 .job-btn:disabled { opacity: .55; }
 
 .job-timer{font-size:28px;font-weight:800;letter-spacing:2px;text-align:center;margin:16px 0;color:var(--accent)}
+
+/* v0.12.0 registration */
+.register-screen{min-height:calc(100vh - 24px);display:flex;align-items:center;justify-content:center;padding:20px 16px}
+.register-card{width:100%;max-width:390px;padding:24px 20px;border:1px solid var(--border);border-radius:22px;background:var(--panel);box-shadow:0 18px 50px rgba(0,0,0,.25);text-align:center}
+.register-logo{font-size:32px;font-weight:900;letter-spacing:1px;margin-bottom:8px}.register-logo span{color:var(--accent)}
+.register-card h1{margin:0;font-size:24px}.register-card p{margin:8px 0 18px;color:var(--muted);font-size:12px;line-height:1.5}
+.register-user{padding:11px 13px;border:1px solid var(--border);border-radius:13px;background:rgba(255,255,255,.025);margin-bottom:16px;font-size:13px}
+.register-label{display:block;text-align:left;color:var(--muted);font-size:11px;margin:0 2px 7px}.register-input{width:100%;box-sizing:border-box;padding:13px 14px;border-radius:13px;border:1px solid var(--border);background:#10151e;color:var(--text);outline:none;font-size:14px}.register-input:focus{border-color:var(--accent)}
+.register-btn{width:100%;margin-top:12px;padding:13px 16px;border:0;border-radius:13px;background:var(--accent);color:#111;font-weight:800;font-size:14px}.register-btn:disabled{opacity:.55}
+.register-hint{margin-top:9px;color:var(--muted);font-size:9px;line-height:1.4}.register-error{min-height:18px;margin-top:8px;color:#ff8f8f;font-size:11px}
