@@ -388,3 +388,5 @@ button {
 }
 .work-action.danger { background: #2a313d; color: var(--text); border: 1px solid var(--border); }
 .job-btn:disabled { opacity: .55; }
+
+.job-timer{font-size:28px;font-weight:800;letter-spacing:2px;text-align:center;margin:16px 0;color:var(--accent)}
