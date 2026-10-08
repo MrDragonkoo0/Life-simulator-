@@ -72,7 +72,7 @@ function startLifePlus(){
         '<button class="menu-button" type="button" data-page="'+key+'"><span class="menu-icon">'+icons[key]+'</span><span>'+name+'</span></button>'
       ).join("")+
       '</section>'+
-      '<footer class="footer"><div>Life+ v0.8.2</div><div>Онлайн-симулятор життя</div></footer>';
+      '<footer class="footer"><div>Life+ v0.9.0</div><div>Онлайн-симулятор життя</div></footer>';
   }
 
   function goHome(){
@@ -125,6 +125,11 @@ function startLifePlus(){
   });
 
   function tick(){
+    const economy=LifePlusState.processEconomy(Date.now());
+    if(economy.warnings.length){
+      const last=economy.warnings[economy.warnings.length-1];
+      toastMsg(last);
+    }
     const s=S();
     if(s.working&&Date.now()>=s.shiftEndsAt){
       const pay=s.shiftPay;
