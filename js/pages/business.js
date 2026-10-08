@@ -7,4 +7,25 @@ const biz=[
  ["service","🔧","Автосервіс",100000,"Ремонт автомобілів"],
  ["dealer","🚗","Автосалон",150000,"Продаж автомобілів"]
 ];
-window.LifePlusPages.business={title:"🏢 Бізнеси",render:function(){const s=S();return `<section class="info-card"><div class="section-title">🏢 Мої бізнеси</div>${s.businesses.length?s.businesses.map(b=>`<div class="info-row"><span>${b.icon||"🏢"} ${b.name}</span><b>Власний</b></div><div class="info-row"><span>💰 Виручка</span><b>${LifePlusState.money(b.revenue||0)}</b></div><div class="info-row"><span>🛍️ Продажів</span><b>${b.sales||0}</b></div>`).join(""):`<div class="locked-home"><b>Бізнесів ще немає</b><small>Купи бізнес і отримуй гроші від покупок інших гравців.</small></div>`}</section><section class="info-card"><div class="section-title">🛍️ Бізнеси на продаж</div>${biz.map(b=>`<article class="job-card"><div class="job-icon">${b[1]}</div><div class="job-main"><b>${b[2]}</b><small>${b[4]}</small><div class="job-meta"><span>💰 ${LifePlusState.money(b[3])}</span></div></div><button class="job-btn" data-biz="${b[0]}">Купити</button></article>`).join("")}</section><section class="info-card"><div class="section-title">ℹ️ Як це працює</div><div class="locked-home"><small>Коли інший гравець купує товар або послугу у твоєму бізнесі, гроші надходять тобі. Онлайн-перекази між реальними акаунтами будуть підключені разом із серверною базою.</small></div></section>`},bind:function(){document.querySelectorAll("[data-biz]").forEach(btn=>btn.onclick=()=>{const b=biz.find(x=>x[0]===btn.dataset.biz),s=S();if(!b||s.balance<b[3])return LifePlusApp.toast("Недостатньо грошей");s.balance-=b[3];s.businesses.push({type:b[0],name:b[2],icon:b[1],purchasePrice:b[3],revenue:0,sales:0,balance:0});LifePlusState.addHistory("Купівля бізнесу","-"+LifePlusState.money(b[3]));LifePlusState.save();LifePlusApp.openPage("business",true)})}}})();
+window.LifePlusPages.business={
+ title:"🏢 Бізнеси",
+ render:function(){
+  const s=S();
+  return `<section class="info-card"><div class="section-title">🏢 Мої бізнеси</div>${s.businesses.length?s.businesses.map(b=>`<div class="info-row"><span>${b.icon||"🏢"} ${b.name}</span><b>Власний</b></div><div class="info-row"><span>💰 Виручка</span><b>${LifePlusState.money(b.revenue||0)}</b></div><div class="info-row"><span>🛍️ Продажів</span><b>${b.sales||0}</b></div>`).join(""):`<div class="locked-home"><b>Бізнесів ще немає</b><small>Купи бізнес і отримуй гроші від покупок інших гравців.</small></div>`}</section>
+  <section class="info-card"><div class="section-title">🛍️ Бізнеси на продаж</div>${biz.map(b=>`<article class="job-card"><div class="job-icon">${b[1]}</div><div class="job-main"><b>${b[2]}</b><small>${b[4]}</small><div class="job-meta"><span>💰 ${LifePlusState.money(b[3])}</span></div></div><button class="job-btn" data-biz="${b[0]}">Купити</button></article>`).join("")}</section>
+  <section class="info-card"><div class="section-title">ℹ️ Як це працює</div><div class="locked-home"><small>Коли інший гравець купує товар або послугу у твоєму бізнесі, гроші надходять тобі.</small></div></section>`;
+ },
+ bind:function(){
+  document.querySelectorAll("[data-biz]").forEach(btn=>btn.onclick=async()=>{
+   const b=biz.find(x=>x[0]===btn.dataset.biz),s=S();
+   if(!b||s.balance<b[3])return LifePlusApp.toast("Недостатньо грошей");
+   btn.disabled=true;
+   try{
+    if(window.LifePlusAPI){const r=await LifePlusAPI.purchaseBusiness(b[0]);Object.assign(s,r.state)}
+    else{s.balance-=b[3];s.businesses.push({type:b[0],name:b[2],icon:b[1],purchasePrice:b[3],revenue:0,sales:0,balance:0});LifePlusState.addHistory("Купівля бізнесу","-"+LifePlusState.money(b[3]))}
+    LifePlusState.save();LifePlusApp.toast("Бізнес придбано");LifePlusApp.openPage("business",true);
+   }catch(e){btn.disabled=false;LifePlusApp.toast(e.message)}
+  });
+ }
+};
+})();
