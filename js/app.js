@@ -105,7 +105,7 @@ function startLifePlus(){
         '<button class="menu-button" type="button" data-page="'+key+'"><span class="menu-icon">'+icons[key]+'</span><span>'+name+'</span></button>'
       ).join("")+
       '</section>'+
-      '<footer class="footer"><div>Life+ v0.12.0</div><div>Онлайн-симулятор життя</div></footer>';
+      '<footer class="footer"><div>Life+ v0.14.0</div><div>Онлайн-симулятор життя</div></footer>';
   }
 
   function goHome(){
