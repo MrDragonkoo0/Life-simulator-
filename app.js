@@ -17,13 +17,68 @@
   const toast = document.getElementById("toast");
   let toastTimer;
 
+  const STORAGE_KEY = "lifeplus_v06_state";
+
   const state = {
     balance: 1000,
     foodDays: 3,
     foodSpent: 0,
     job: null,
-    housing: "room"
+    housing: "room",
+    xp: 0,
+    working: false,
+    shiftStartedAt: 0,
+    shiftEndsAt: 0,
+    shiftPay: 0
   };
+
+  function saveState() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function loadState() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+      if (!saved) return;
+      Object.keys(state).forEach(function (key) {
+        if (saved[key] !== undefined) state[key] = saved[key];
+      });
+    } catch (e) {}
+  }
+
+  function level() {
+    return Math.floor(state.xp / 100) + 1;
+  }
+
+  function formatTime(ms) {
+    const total = Math.max(0, Math.ceil(ms / 1000));
+    const h = Math.floor(total / 3600);
+    const m = Math.floor((total % 3600) / 60);
+    const sec = total % 60;
+    return (h ? String(h).padStart(2, "0") + ":" : "") + String(m).padStart(2, "0") + ":" + String(sec).padStart(2, "0");
+  }
+
+  function finishShift(full) {
+    if (!state.working) return;
+    const total = 60 * 60 * 1000;
+    const elapsed = Math.min(total, Math.max(0, Date.now() - state.shiftStartedAt));
+    const ratio = full ? 1 : elapsed / total;
+    const earned = Math.max(0, Math.floor(state.shiftPay * ratio));
+    const earnedXp = Math.max(0, Math.floor(100 * ratio));
+
+    state.balance += earned;
+    state.xp += earnedXp;
+    state.working = false;
+    state.shiftStartedAt = 0;
+    state.shiftEndsAt = 0;
+    state.shiftPay = 0;
+    saveState();
+    showToast("Зароблено ₴" + earned + " • +" + earnedXp + " XP");
+  }
+
+  function checkShift() {
+    if (state.working && Date.now() >= state.shiftEndsAt) finishShift(true);
+  }
 
   const pageNames = {
     profile: "Профіль",
@@ -81,7 +136,7 @@
         '<div class="avatar">👤</div>' +
         '<div>' +
           '<div class="player-name">Новачок</div>' +
-          '<div class="player-level">Рівень 1</div>' +
+          '<div class="player-level">Рівень ' + level() + '</div>' +
         '</div>' +
       '</div>' +
       '<button class="notification" id="notifications" aria-label="Сповіщення">' +
@@ -130,7 +185,7 @@
         '<div class="stat">' +
           '<div class="stat-icon">⭐</div>' +
           '<div class="stat-title">Рівень</div>' +
-          '<div class="stat-value">1</div>' +
+          '<div class="stat-value">' + level() + '</div>' +
         '</div>' +
       '</section>' +
 
@@ -148,7 +203,7 @@
       '</section>' +
 
       '<footer class="footer">' +
-        '<div>Life+ v0.5.1</div>' +
+        '<div>Life+ v0.6.0</div>' +
         '<div>Онлайн-симулятор життя</div>' +
       '</footer>'
     );
@@ -159,7 +214,7 @@
       '<section class="profile-card">' +
         '<div class="profile-avatar">👤</div>' +
         '<h1>Гравець</h1>' +
-        '<div class="level-pill">РІВЕНЬ <b>1</b></div>' +
+        '<div class="level-pill">РІВЕНЬ <b>' + level() + '</b></div>' +
       '</section>' +
       '<section class="balance-card">' +
         '<div><span class="muted">Баланс</span><strong id="pageBalance">₴1 000</strong></div>' +
@@ -190,23 +245,33 @@
   }
 
   function workHTML() {
+    checkShift();
+    const working = state.working;
+    const current = state.job ? state.job.name : "Без роботи";
+    const timer = working ? formatTime(state.shiftEndsAt - Date.now()) : "01:00:00";
+    const action = working
+      ? '<button class="work-action danger" id="leaveWork">Завершити зміну</button>'
+      : (state.job ? '<button class="work-action" id="startWork">Почати зміну</button>' : '');
+
     return (
       '<section class="info-card">' +
         '<div class="section-title">Поточна робота</div>' +
         '<div id="currentJob" class="job-current">' +
-          '<b>' + (state.job ? state.job.name : "Без роботи") + '</b>' +
-          '<small>' + (state.job ? "Роботу обрано." : "Обери професію нижче, щоб почати заробляти.") + '</small>' +
+          '<b>' + current + '</b>' +
+          '<small>' + (working ? 'Зміна триває. Працюй до кінця, щоб отримати повну зарплату.' : (state.job ? 'Професія обрана. Можна починати зміну.' : 'Обери професію нижче, щоб почати заробляти.')) + '</small>' +
         '</div>' +
+        (working ? '<div class="work-timer"><span>⏱️ До кінця зміни</span><strong id="shiftTimer">' + timer + '</strong></div>' : '') +
+        '<div class="work-actions">' + action + '</div>' +
       '</section>' +
       '<section class="info-card">' +
         '<div class="section-title">Доступні професії</div>' +
         '<article class="job-card">' +
           '<div class="job-icon">📦</div><div class="job-main"><b>Працівник складу</b><small>Початкова робота • без вимог</small><div class="job-meta"><span>💰 ₴700 / зміна</span><span>⏱️ 1 година</span></div></div>' +
-          '<button class="job-btn" data-name="Працівник складу" data-pay="700">Обрати</button>' +
+          '<button class="job-btn" data-name="Працівник складу" data-pay="700" ' + (working ? 'disabled' : '') + '>' + (state.job && state.job.name === 'Працівник складу' ? 'Обрано' : 'Обрати') + '</button>' +
         '</article>' +
         '<article class="job-card">' +
           '<div class="job-icon">🛒</div><div class="job-main"><b>Касир</b><small>Потрібен 1 рівень</small><div class="job-meta"><span>💰 ₴800 / зміна</span><span>⏱️ 1 година</span></div></div>' +
-          '<button class="job-btn" data-name="Касир" data-pay="800">Обрати</button>' +
+          '<button class="job-btn" data-name="Касир" data-pay="800" ' + (working ? 'disabled' : '') + '>' + (state.job && state.job.name === 'Касир' ? 'Обрано' : 'Обрати') + '</button>' +
         '</article>' +
         '<article class="job-card">' +
           '<div class="job-icon">🚕</div><div class="job-main"><b>Водій таксі</b><small>Потрібен транспорт • буде доступно пізніше</small><div class="job-meta"><span>💰 ₴1 100 / зміна</span><span>⏱️ 1 година</span></div></div>' +
@@ -215,9 +280,9 @@
       '</section>' +
       '<section class="info-card">' +
         '<div class="section-title">📈 Досвід роботи</div>' +
-        '<div class="xp-line"><span>0 / 100 XP</span><b>0%</b></div>' +
-        '<div class="xp-bar"><div style="width:0%"></div></div>' +
-        '<small class="muted" style="display:block;margin-top:8px;font-size:10px">Досвід і підвищення зарплати будуть розвиватися далі.</small>' +
+        '<div class="xp-line"><span>' + state.xp + ' / 100 XP</span><b>' + Math.min(100, state.xp % 100) + '%</b></div>' +
+        '<div class="xp-bar"><div style="width:' + Math.min(100, state.xp % 100) + '%"></div></div>' +
+        '<small class="muted" style="display:block;margin-top:8px;font-size:10px">Повна зміна дає 100 XP. Часткова зміна дає XP пропорційно відпрацьованому часу.</small>' +
       '</section>'
     );
   }
@@ -262,22 +327,54 @@
   }
 
   function bindWork() {
+    checkShift();
+
     document.querySelectorAll(".job-btn:not(.disabled)").forEach(function (button) {
       button.addEventListener("click", function () {
-        state.job = {
-          name: button.dataset.name,
-          pay: Number(button.dataset.pay)
-        };
-        const current = document.getElementById("currentJob");
-        if (current) {
-          current.innerHTML = "<b>" + state.job.name + "</b><small>Роботу обрано. Реальний таймер зміни буде підключено наступним оновленням.</small>";
-        }
-        document.querySelectorAll(".job-btn:not(.disabled)").forEach(function (b) {
-          b.textContent = "Обрати";
-        });
-        button.textContent = "Обрано";
+        if (state.working) return;
+        state.job = { name: button.dataset.name, pay: Number(button.dataset.pay) };
+        saveState();
+        openPage("work", true);
       });
     });
+
+    const startButton = document.getElementById("startWork");
+    if (startButton) {
+      startButton.addEventListener("click", function () {
+        if (!state.job || state.working) return;
+        state.working = true;
+        state.shiftStartedAt = Date.now();
+        state.shiftEndsAt = state.shiftStartedAt + 60 * 60 * 1000;
+        state.shiftPay = state.job.pay;
+        saveState();
+        openPage("work", true);
+      });
+    }
+
+    const leaveButton = document.getElementById("leaveWork");
+    if (leaveButton) {
+      leaveButton.addEventListener("click", function () {
+        finishShift(false);
+        openPage("work", true);
+      });
+    }
+
+    if (state.working) {
+      window.clearInterval(window.lifePlusTimer);
+      window.lifePlusTimer = window.setInterval(function () {
+        if (!state.working) {
+          window.clearInterval(window.lifePlusTimer);
+          return;
+        }
+        if (Date.now() >= state.shiftEndsAt) {
+          finishShift(true);
+          openPage("work", true);
+          return;
+        }
+        const timer = document.getElementById("shiftTimer");
+        if (timer) timer.textContent = formatTime(state.shiftEndsAt - Date.now());
+      }, 1000);
+    }
   }
 
   function bindHousing() {
@@ -288,6 +385,7 @@
         });
         button.textContent = "Обрано";
         state.housing = button.dataset.home;
+        saveState();
       });
     });
   }
@@ -307,6 +405,7 @@
         state.balance -= price;
         state.foodDays += days;
         state.foodSpent += price;
+        saveState();
 
         const balance = document.getElementById("shopBalance");
         const foodDays = document.getElementById("foodDays");
@@ -332,7 +431,7 @@
     window.scrollTo(0, 0);
   }
 
-  function openPage(page) {
+  function openPage(page, internal) {
     if (page === "profile") {
       setSubpageHeader("Профіль");
       view.innerHTML = profileHTML();
@@ -354,9 +453,9 @@
       return;
     }
 
-    try {
-      window.history.pushState({ page: page }, "", "#" + page);
-    } catch (e) {}
+    if (!internal) {
+      try { window.history.pushState({ page: page }, "", "#" + page); } catch (e) {}
+    }
     window.scrollTo(0, 0);
   }
 
@@ -376,6 +475,8 @@
   });
 
   // Start screen.
+  loadState();
+  checkShift();
   restoreMainHeader();
   view.innerHTML = mainHTML();
   bindMainMenu();
