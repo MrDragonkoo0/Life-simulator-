@@ -9,7 +9,7 @@ const state={
   tasks:{firstJob:false,firstShift:false,firstCar:false},settings:{notifications:true,vibration:true}
 };
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
-function load(){try{let raw=localStorage.getItem(KEY);if(!raw)for(const k of OLD_KEYS){raw=localStorage.getItem(k);if(raw)break}const x=JSON.parse(raw||"null");if(x)Object.keys(state).forEach(k=>{if(x[k]!==undefined)state[k]=x[k]});}catch(e){} if(!state.lastEconomyAt)state.lastEconomyAt=Date.now(); if(!state.playerId)state.playerId="local"; if(!Array.isArray(state.businesses))state.businesses=[];}
+function load(){try{let raw=localStorage.getItem(KEY);if(!raw)for(const k of OLD_KEYS){raw=localStorage.getItem(k);if(raw)break}const x=JSON.parse(raw||"null");if(x)Object.keys(state).forEach(k=>{if(x[k]!==undefined)state[k]=x[k]});}catch(e){} if(!state.lastEconomyAt)state.lastEconomyAt=Date.now(); if(!state.playerId)state.playerId="local"; if(!Array.isArray(state.businesses))state.businesses=[]; if(!Array.isArray(state.cars))state.cars=[]; state.cars.forEach(c=>{if(c.fuel===undefined)c.fuel=100;if(c.condition===undefined)c.condition=100;if(c.price===undefined){const base={"Lada 2107":8000,"Daewoo Lanos":12000,"Skoda Octavia":25000}[c.name]||0;c.price=base}});}
 function addXP(n){state.xp+=n;state.level=Math.floor(state.xp/100)+1;save()}
 function money(n){return "₴"+Math.max(0,Math.round(n)).toLocaleString("uk-UA")}
 function addHistory(text,amount){state.bankHistory.push({text,amount});if(state.bankHistory.length>100)state.bankHistory=state.bankHistory.slice(-100)}
