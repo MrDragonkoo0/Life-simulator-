@@ -1,8 +1,1 @@
-(function () {
-  window.LifePlusPages = window.LifePlusPages || {};
-  window.LifePlusPages.bank = {
-    title:"🏦 Банк",
-    render:function(){ const s=LifePlusState.state; return `<section class="balance-card"><div><span class="muted">Баланс рахунку</span><strong>₴${s.balance.toLocaleString("uk-UA")}</strong></div><div class="wallet-icon">🏦</div></section><section class="info-card"><div class="section-title">🏦 Банківські операції</div><div class="info-row"><span>💳 Картка</span><b>Не оформлена</b></div><div class="info-row"><span>💸 Перекази</span><b>Скоро</b></div><div class="info-row"><span>📜 Історія</span><b>Скоро</b></div></section>`;},
-    bind:function(){}
-  };
-})();
+(function(){const S=()=>LifePlusState.state;window.LifePlusPages.bank={title:"🏦 Банк",render:function(){let s=S();return `<section class="balance-card"><div><span class="muted">Баланс</span><strong>${LifePlusState.money(s.balance)}</strong></div><div class="wallet-icon">🏦</div></section><section class="info-card"><div class="section-title">📜 Історія операцій</div>${s.bankHistory.length?s.bankHistory.slice(-10).reverse().map(x=>`<div class="info-row"><span>${x.text}</span><b>${x.amount}</b></div>`).join(""):`<div class="locked-home"><b>Операцій ще немає</b><small>Покупки та інші фінансові дії з'являться тут.</small></div>`}</section>`},bind:function(){}}})();

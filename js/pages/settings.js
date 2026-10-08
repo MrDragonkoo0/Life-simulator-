@@ -1,8 +1,1 @@
-(function () {
-  window.LifePlusPages = window.LifePlusPages || {};
-  window.LifePlusPages.settings = {
-    title:"⚙️ Налаштування",
-    render:function(){ return `<section class="info-card"><div class="section-title">⚙️ Налаштування</div><div class="info-row"><span>🔔 Сповіщення</span><button class="home-btn selected">Увімкнено</button></div><div class="info-row"><span>📱 Вібрація</span><button class="home-btn selected">Увімкнено</button></div><div class="info-row"><span>🌙 Тема</span><b>Темна</b></div></section><section class="info-card"><div class="section-title">ℹ️ Про гру</div><div class="info-row"><span>Версія</span><b>v0.7.0</b></div><div class="info-row"><span>Гра</span><b>Life+</b></div></section>`;},
-    bind:function(){}
-  };
-})();
+(function(){const S=()=>LifePlusState.state;window.LifePlusPages.settings={title:"⚙️ Налаштування",render:function(){let s=S();return `<section class="info-card"><div class="section-title">⚙️ Налаштування</div>${["notifications","vibration"].map((k,i)=>`<div class="info-row"><span>${i?"📳":"🔔"} ${i?"Вібрація":"Сповіщення"}</span><button class="home-btn ${s.settings[k]?"selected":""}" data-set="${k}">${s.settings[k]?"Увімкнено":"Вимкнено"}</button></div>`).join("")}<div class="info-row"><span>🌙 Тема</span><b>Темна</b></div></section><section class="info-card"><div class="section-title">ℹ️ Про гру</div><div class="info-row"><span>Версія</span><b>v0.8.0</b></div></section>`},bind:function(){document.querySelectorAll("[data-set]").forEach(b=>b.onclick=()=>{let k=b.dataset.set;S().settings[k]=!S().settings[k];LifePlusState.save();LifePlusApp.openPage("settings",true)})}}})();
