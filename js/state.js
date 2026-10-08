@@ -2,7 +2,7 @@
 "use strict";
 const KEY="lifeplus_v10_state",OLD_KEYS=["lifeplus_v09_state","lifeplus_v08_state"];
 const state={
-  playerId:"local",balance:1000,foodDays:3,foodSpent:0,job:null,housing:"room",xp:0,level:1,workedHours:0,
+  playerId:"local",registered:false,nickname:"",balance:1000,foodDays:3,foodSpent:0,job:null,housing:"room",xp:0,level:1,workedHours:0,
   working:false,shiftStartedAt:0,shiftEndsAt:0,shiftPay:0,cars:[],businesses:[],bankHistory:[],
   debt:0,gameHours:0,lastEconomyAt:Date.now(),rentPaidCount:0,missedBills:0,
   daily:{day:0,shift:false,food:false,earned:0,rewarded:[]},

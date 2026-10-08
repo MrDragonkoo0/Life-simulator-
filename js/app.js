@@ -32,11 +32,44 @@ function startLifePlus(){
     }
   }
 
+  function registration(){
+    const u=(tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user)||{};
+    view.innerHTML='<section class="register-screen">'+
+      '<div class="register-card">'+
+      '<div class="register-logo">LIFE<span>+</span></div>'+
+      '<h1>Реєстрація</h1>'+
+      '<p>Створи свого персонажа та почни життя у Life+.</p>'+
+      '<div class="register-user">👤 '+(u.first_name||'Гравець')+'</div>'+
+      '<label class="register-label">Нікнейм</label>'+
+      '<input class="register-input" id="registerNickname" maxlength="20" minlength="3" placeholder="Наприклад, Dragon" autocomplete="off">'+
+      '<button class="register-btn" id="registerBtn" type="button">Почати гру</button>'+
+      '<div class="register-hint">3–20 символів • літери, цифри, пробіл, _ або -</div>'+
+      '<div class="register-error" id="registerError"></div>'+
+      '</div></section>';
+    const input=document.getElementById("registerNickname"),btn=document.getElementById("registerBtn"),err=document.getElementById("registerError");
+    btn.addEventListener("click",async()=>{
+      const nickname=input.value.trim();
+      err.textContent=""; btn.disabled=true; btn.textContent="Реєстрація...";
+      try{
+        if(!window.LifePlusAPI)throw new Error("Сервер недоступний");
+        const result=await window.LifePlusAPI.register(nickname);
+        Object.assign(LifePlusState.state,result.state||{});
+        LifePlusState.state.registered=true;
+        LifePlusState.state.nickname=nickname;
+        LifePlusState.save();
+        mainHeader(); view.innerHTML=home();
+        try{history.replaceState({page:"home"},"","#home")}catch(e){}
+        toastMsg("Вітаємо у Life+!");
+      }catch(e){err.textContent=e.message||"Помилка реєстрації";btn.disabled=false;btn.textContent="Почати гру";}
+    });
+    input.focus();
+  }
+
   function mainHeader(){
     topbar.innerHTML=
       '<div class="player">'+
         '<div class="avatar">👤</div>'+
-        '<div><div class="player-name">Новачок</div>'+
+        '<div><div class="player-name">'+(S().nickname||"Новачок")+'</div>'+
         '<div class="player-level">Рівень '+S().level+'</div></div>'+
       '</div>'+
       '<button class="notification" id="notifications" type="button">🔔<span class="notification-dot"></span></button>';
@@ -153,9 +186,16 @@ function startLifePlus(){
   LifePlusState.load();
   if(window.LifePlusAPI){
     window.LifePlusAPI.sync(LifePlusState.state).then(result=>{
-      if(!result.created){Object.assign(LifePlusState.state,result.state);LifePlusState.save();}
+      if(!result.registered){registration();return;}
+      Object.assign(LifePlusState.state,result.state||{});
+      LifePlusState.state.registered=true;
+      LifePlusState.save();
       mainHeader();view.innerHTML=home();
-    }).catch(()=>{mainHeader();view.innerHTML=home();});
+    }).catch(err=>{
+      console.error(err);
+      if(err&&/реєстрац/i.test(err.message||""))registration();
+      else {mainHeader();view.innerHTML=home();}
+    });
   }else{mainHeader();view.innerHTML=home();}
   try{history.replaceState({page:"home"},"","#home")}catch(e){}
   window.setInterval(tick,1000);
