@@ -100,9 +100,9 @@ function startLifePlus(){
       '<div class="stat"><div class="stat-icon">💼</div><div class="stat-title">Робота</div><div class="stat-value">'+(s.job?s.job.name:"Немає")+'</div></div>'+
       '<div class="stat"><div class="stat-icon">⭐</div><div class="stat-title">Рівень</div><div class="stat-value">'+s.level+'</div></div>'+
       '</section>'+
-      '<section class="menu">'+
+      '<section class="menu texture-menu">'+
       Object.entries(LifePlusNavigation.names).map(([key,name])=>
-        '<button class="menu-button" type="button" data-page="'+key+'"><span class="menu-icon">'+icons[key]+'</span><span>'+name+'</span></button>'
+        '<button class="menu-button texture-menu-button texture-'+key+'" type="button" data-page="'+key+'" aria-label="'+name+'" title="'+name+'"></button>'
       ).join("")+
       '</section>'+
       '<footer class="footer"><div>Life+ v0.14.0</div><div>Онлайн-симулятор життя</div></footer>';
