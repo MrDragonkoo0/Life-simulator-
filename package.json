@@ -1,0 +1,10 @@
+{
+  "name": "lifeplus",
+  "version": "0.12.0",
+  "private": true,
+  "description": "Life+ Telegram Mini App with Railway PostgreSQL backend",
+  "main": "server.js",
+  "scripts": {"start":"node server.js"},
+  "engines": {"node": ">=20"},
+  "dependencies": {"express":"^4.21.2","pg":"^8.13.1"}
+}

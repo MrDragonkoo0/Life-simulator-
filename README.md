@@ -1,14 +1,31 @@
-# Life+ v0.8.0 — Full Gameplay Foundation
-- persistent local state
-- profile XP and levels
-- real 1-hour work shift timer
-- proportional pay when leaving early
-- food purchases
-- housing selection
-- bank history
-- tasks
-- vehicle purchases
-- business purchases
-- settings toggles
-- modular JS structure
-- original main-menu design preserved
+# Life+ v0.12.0 — Online
+
+## Що додано
+- Railway PostgreSQL backend через `DATABASE_URL`.
+- Реальні акаунти за Telegram user ID.
+- Збереження стану гравця на сервері.
+- Список реальних гравців та онлайн-лічильник.
+- Купівля бізнесу через сервер із блокуванням подвійної покупки.
+- Реальні покупки товарів/авто в бізнесі іншого гравця.
+- Переказ грошей між гравцями через API.
+- Атомарні серверні транзакції для балансу покупця та власника.
+- Локальний прогрес зберігається як резервний, якщо сервер тимчасово недоступний.
+
+## Railway
+Створіть PostgreSQL у Railway та переконайтеся, що `DATABASE_URL` доступний сервісу. Для перевірки відкрийте `/api/health`.
+
+Якщо потрібна серверна перевірка Telegram `initData`, додайте `BOT_TOKEN` у Variables. Поточна версія використовує Telegram user ID з Mini App для ідентифікації клієнта.
+
+## Змінені файли у v0.12.0
+- `server.js` — новий сервер/API.
+- `package.json` — залежності та запуск Railway.
+- `index.html` — підключено `js/api.js`.
+- `js/api.js` — клієнтська онлайн-синхронізація.
+- `js/state.js` — синхронізація стану із сервером.
+- `js/app.js` — початкова серверна синхронізація та версія.
+- `js/pages/business.js` — серверна купівля бізнесу.
+- `js/pages/transport.js` — онлайн-покупка авто у власника автосалону.
+- `js/pages/players.js` — реальний список гравців.
+- `js/pages/settings.js` — версія.
+
+Інші файли та дизайн не змінювалися.
