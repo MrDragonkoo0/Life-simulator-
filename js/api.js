@@ -14,5 +14,8 @@ async function purchaseBusiness(type){return request('/api/business/purchase',{m
 async function purchaseFromBusiness(businessType,item,amount){return request('/api/market/purchase',{method:'POST',body:JSON.stringify({businessType,item,amount})})}
 async function players(){return request('/api/players')}
 async function transfer(to,amount){return request('/api/transfer',{method:'POST',body:JSON.stringify({to,amount})})}
-window.LifePlusAPI={queueSave,sync,register,purchaseBusiness,purchaseFromBusiness,players,transfer};
+async function social(){return request('/api/social')}
+async function friendRequest(to){return request('/api/friends/request',{method:'POST',body:JSON.stringify({to})})}
+async function sendMessage(to,text){return request('/api/messages',{method:'POST',body:JSON.stringify({to,text})})}
+window.LifePlusAPI={queueSave,sync,register,purchaseBusiness,purchaseFromBusiness,players,transfer,social,friendRequest,sendMessage};
 })();
