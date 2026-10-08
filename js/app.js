@@ -72,7 +72,7 @@ function startLifePlus(){
         '<button class="menu-button" type="button" data-page="'+key+'"><span class="menu-icon">'+icons[key]+'</span><span>'+name+'</span></button>'
       ).join("")+
       '</section>'+
-      '<footer class="footer"><div>Life+ v0.10.0</div><div>Онлайн-симулятор життя</div></footer>';
+      '<footer class="footer"><div>Life+ v0.12.0</div><div>Онлайн-симулятор життя</div></footer>';
   }
 
   function goHome(){
@@ -151,8 +151,12 @@ function startLifePlus(){
   }catch(e){}
 
   LifePlusState.load();
-  mainHeader();
-  view.innerHTML=home();
+  if(window.LifePlusAPI){
+    window.LifePlusAPI.sync(LifePlusState.state).then(result=>{
+      if(!result.created){Object.assign(LifePlusState.state,result.state);LifePlusState.save();}
+      mainHeader();view.innerHTML=home();
+    }).catch(()=>{mainHeader();view.innerHTML=home();});
+  }else{mainHeader();view.innerHTML=home();}
   try{history.replaceState({page:"home"},"","#home")}catch(e){}
   window.setInterval(tick,1000);
 }
