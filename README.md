@@ -27,3 +27,7 @@ SQLite залишається у `/data/lifeplus.db`. PostgreSQL не викор
 - `README.md`
 
 Дизайн головного меню та `index.html` не змінювалися.
+
+
+## v0.14.0 prototype textures
+The main menu now uses the supplied prototype texture cards from `assets/menu/`. The working v0.14 work page fix is preserved.
