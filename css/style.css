@@ -716,3 +716,80 @@ body {
   .menu-grid, .main-menu, .menu-container { gap: 8px; }
   .menu-button { min-height: 78px; border-radius: 16px; }
 }
+
+
+/* Statistics cards: readable labels and values on a dedicated bottom plate */
+.stats {
+  gap: 8px;
+  align-items: stretch;
+}
+.stats .stat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: stretch;
+  min-width: 0;
+  height: 118px;
+  min-height: 118px;
+  padding: 0 7px 7px;
+  box-sizing: border-box;
+  border: 2px solid rgba(10, 165, 255, .75);
+  border-radius: 18px;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+.stats .stat:nth-child(odd) {
+  border-color: rgba(255, 120, 36, .9);
+  box-shadow: 0 0 8px rgba(255, 110, 28, .24);
+}
+.stats .stat:nth-child(even) {
+  border-color: rgba(0, 174, 255, .9);
+  box-shadow: 0 0 8px rgba(0, 174, 255, .24);
+}
+.stats .stat-title,
+.stats .stat-value {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 2px 3px;
+  box-sizing: border-box;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: rgba(3, 8, 18, .88);
+  text-shadow: 0 1px 3px #000;
+}
+.stats .stat-title {
+  border-radius: 8px 8px 0 0;
+  color: #cbd7e8;
+  font-size: 12px;
+  line-height: 1.25;
+}
+.stats .stat-value {
+  border-radius: 0 0 8px 8px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 0;
+}
+.stats .stat-icon {
+  display: none !important;
+}
+@media (max-width: 380px) {
+  .stats { gap: 6px; }
+  .stats .stat {
+    height: 106px;
+    min-height: 106px;
+    padding: 0 5px 6px;
+    border-radius: 14px;
+  }
+  .stats .stat-title { font-size: 11px; }
+  .stats .stat-value { font-size: 12px; }
+}
