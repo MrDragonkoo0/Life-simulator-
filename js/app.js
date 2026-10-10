@@ -69,11 +69,8 @@ function startLifePlus(){
     topbar.innerHTML=
       '<div class="player">'+
         '<div class="avatar">👤</div>'+
-        '<div class="player-info"><div class="player-name">'+(S().nickname||"Новачок")+'</div>'+
-        '<div class="player-level-texture" aria-label="Рівень '+S().level+'">'+
-          '<div class="player-xp-track"><div class="player-xp-fill" style="width:'+Math.max(0,Math.min(100,Number(S().xp||0)%100))+'%"></div></div>'+
-          '<span class="player-level-number">'+S().level+'</span>'+
-        '</div></div>'+
+        '<div><div class="player-name">'+(S().nickname||"Новачок")+'</div>'+
+        '<div class="player-level">Рівень '+S().level+'</div></div>'+
       '</div>'+
       '<button class="notification" id="notifications" type="button">🔔<span class="notification-dot"></span></button>';
 
@@ -188,11 +185,20 @@ function startLifePlus(){
 
   LifePlusState.load();
   if(window.LifePlusAPI){
+    const localSavedAt=LifePlusState.getSavedAt?LifePlusState.getSavedAt():0;
     window.LifePlusAPI.sync(LifePlusState.state).then(result=>{
       if(!result.registered){registration();return;}
-      Object.assign(LifePlusState.state,result.state||{});
-      LifePlusState.state.registered=true;
-      LifePlusState.save();
+      const serverState=result.state||{};
+      const serverSavedAt=Number(serverState._savedAt||0);
+      if(localSavedAt>serverSavedAt){
+        // Local progress is newer than the last server save: keep it and sync it upward.
+        LifePlusState.state.registered=true;
+        LifePlusState.save();
+      }else{
+        Object.assign(LifePlusState.state,serverState);
+        LifePlusState.state.registered=true;
+        LifePlusState.save();
+      }
       mainHeader();view.innerHTML=home();
     }).catch(err=>{
       console.error(err);

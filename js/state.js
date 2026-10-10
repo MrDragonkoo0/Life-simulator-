@@ -2,7 +2,7 @@
 "use strict";
 const KEY="lifeplus_v14_state",OLD_KEYS=["lifeplus_v10_state","lifeplus_v09_state","lifeplus_v08_state"];
 const state={playerId:"local",registered:false,nickname:"",balance:1000,foodDays:3,foodSpent:0,job:null,housing:"room",housingOwned:false,xp:0,level:1,workedHours:0,working:false,shiftStartedAt:0,shiftEndsAt:0,shiftPay:0,cars:[],businesses:[],bankHistory:[],debt:0,gameHours:0,lastEconomyAt:Date.now(),rentPaidCount:0,missedBills:0,daily:{day:0,shift:false,food:false,earned:0,rewarded:[]},weekly:{week:0,worked:0,earned:0,rewarded:[]},inventory:[],achievements:[],career:{level:1,promotions:0},settings:{notifications:true,vibration:true}};
-function save(){try{localStorage.setItem(KEY,JSON.stringify(state));if(window.LifePlusAPI)window.LifePlusAPI.queueSave(state)}catch(e){}}
+function save(){try{state._savedAt=Date.now();localStorage.setItem(KEY,JSON.stringify(state));if(window.LifePlusAPI)window.LifePlusAPI.queueSave(state)}catch(e){}}
 function load(){try{let raw=localStorage.getItem(KEY);if(!raw)for(const k of OLD_KEYS){raw=localStorage.getItem(k);if(raw)break}const x=JSON.parse(raw||"null");if(x)Object.keys(state).forEach(k=>{if(x[k]!==undefined)state[k]=x[k]});}catch(e){} if(!state.lastEconomyAt)state.lastEconomyAt=Date.now();if(!state.playerId)state.playerId="local";if(!Array.isArray(state.businesses))state.businesses=[];if(!Array.isArray(state.cars))state.cars=[];if(!Array.isArray(state.inventory))state.inventory=[];if(!Array.isArray(state.achievements))state.achievements=[];state.cars.forEach(c=>{if(c.fuel===undefined)c.fuel=100;if(c.condition===undefined)c.condition=100;if(c.price===undefined)c.price=0});}
 function addXP(n){state.xp+=n;state.level=Math.floor(state.xp/100)+1;state.career.level=Math.max(state.career.level||1,Math.min(6,Math.floor(state.workedHours/20)+1));save()}
 function money(n){return "₴"+Math.max(0,Math.round(n)).toLocaleString("uk-UA")}
@@ -13,5 +13,5 @@ function ownedBusiness(type){return state.businesses.find(b=>b.type===type)||nul
 function businessIncome(type,amount,label){const b=ownedBusiness(type);if(!b)return false;b.revenue=(b.revenue||0)+amount;b.sales=(b.sales||0)+1;b.balance=(b.balance||0)+amount;addHistory(label||"Дохід бізнесу","+"+money(amount));return true}
 function addItem(item,qty){const x=state.inventory.find(i=>i.id===item.id);if(x)x.qty+=qty;else state.inventory.push({id:item.id,name:item.name,icon:item.icon,qty:qty})}
 function achievement(id,name,reward){if(state.achievements.includes(id))return false;state.achievements.push(id);state.balance+=reward||0;addXP(15);if(reward)addHistory("Досягнення: "+name,"+"+money(reward));save();return true}
-window.LifePlusState={state,save,load,addXP,money,addHistory,processEconomy,housingData,ownedBusiness,businessIncome,addItem,achievement};
+window.LifePlusState={state,save,load,addXP,money,addHistory,processEconomy,housingData,ownedBusiness,businessIncome,addItem,achievement,getSavedAt:()=>Number(state._savedAt||0)};
 })();

@@ -2,12 +2,30 @@
 "use strict";
 const tg=window.Telegram&&window.Telegram.WebApp;
 let timer=0;
+let pendingState=null;
+let saveInFlight=false;
 function headers(){
   const u=(tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user)||{};
   return {'Content-Type':'application/json','X-Telegram-User-ID':String(u.id||'local'),'X-Telegram-User':JSON.stringify(u)};
 }
 async function request(url,options){const r=await fetch(url,{...options,headers:{...headers(),...(options&&options.headers||{})}});const data=await r.json().catch(()=>({}));if(!r.ok||data.ok===false)throw new Error(data.error||'Помилка сервера');return data}
-function queueSave(state){clearTimeout(timer);timer=setTimeout(()=>request('/api/state',{method:'POST',body:JSON.stringify({state})}).catch(()=>{}),1500)}
+function queueSave(state){
+  pendingState=JSON.parse(JSON.stringify(state));
+  clearTimeout(timer);
+  timer=setTimeout(flushSave,500);
+}
+function flushSave(){
+  clearTimeout(timer);
+  if(!pendingState||saveInFlight)return;
+  const snapshot=pendingState;
+  pendingState=null;
+  saveInFlight=true;
+  request('/api/state',{method:'POST',body:JSON.stringify({state:snapshot})})
+    .catch(()=>{if(!pendingState||Number(snapshot._savedAt||0)>Number(pendingState._savedAt||0))pendingState=snapshot})
+    .finally(()=>{saveInFlight=false;if(pendingState)timer=setTimeout(flushSave,250)});
+}
+window.addEventListener('pagehide',flushSave);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flushSave()});
 async function sync(state){const data=await request('/api/state');if(!data.registered)return {state:null,registered:false,player:data.player||{}};return {state:data.state,registered:true,created:false,player:data.player||{}}}
 async function register(nickname){return request('/api/register',{method:'POST',body:JSON.stringify({nickname})})}
 async function purchaseBusiness(type){return request('/api/business/purchase',{method:'POST',body:JSON.stringify({type})})}
