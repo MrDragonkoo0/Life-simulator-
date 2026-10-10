@@ -465,3 +465,23 @@ body {
 .hero-content {
     visibility: hidden;
 }
+
+
+/* Banner texture fix: remove the empty black strip and fit the image */
+.hero {
+    width: 100%;
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    padding: 0;
+    background-image: url("../assets/images/lifeplus-banner.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.hero::after {
+    display: none;
+}
+.hero-content {
+    display: none;
+}
