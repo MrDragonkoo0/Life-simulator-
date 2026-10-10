@@ -69,8 +69,11 @@ function startLifePlus(){
     topbar.innerHTML=
       '<div class="player">'+
         '<div class="avatar">👤</div>'+
-        '<div><div class="player-name">'+(S().nickname||"Новачок")+'</div>'+
-        '<div class="player-level">Рівень '+S().level+'</div></div>'+
+        '<div class="player-info"><div class="player-name">'+(S().nickname||"Новачок")+'</div>'+
+        '<div class="player-level-texture" aria-label="Рівень '+S().level+'">'+
+          '<div class="player-xp-track"><div class="player-xp-fill" style="width:'+Math.max(0,Math.min(100,Number(S().xp||0)%100))+'%"></div></div>'+
+          '<span class="player-level-number">'+S().level+'</span>'+
+        '</div></div>'+
       '</div>'+
       '<button class="notification" id="notifications" type="button">🔔<span class="notification-dot"></span></button>';
 
