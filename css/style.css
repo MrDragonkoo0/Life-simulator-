@@ -441,3 +441,27 @@ button {
 @media (max-width:360px){
   .texture-menu-button{border-radius:14px}
 }
+
+
+/* v0.14.0: user-supplied Life+ backdrop and logo banner */
+html, body {
+    background-color: #080b12;
+}
+body {
+    background-image:
+        linear-gradient(rgba(5, 8, 15, 0.58), rgba(5, 8, 15, 0.78)),
+        url("../assets/images/game-background.png");
+    background-size: cover;
+    background-position: center top;
+    background-attachment: fixed;
+}
+.hero {
+    min-height: 170px;
+    background-image: url("../assets/images/lifeplus-banner.png");
+    background-size: cover;
+    background-position: center;
+    border-color: rgba(255,255,255,0.16);
+}
+.hero-content {
+    visibility: hidden;
+}
