@@ -406,19 +406,26 @@ button {
 .social-player{display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid var(--border)}.social-avatar,.big-avatar{display:grid;place-items:center;border-radius:14px;background:rgba(255,255,255,.05)}.social-avatar{width:42px;height:42px;font-size:20px}.social-main{flex:1;min-width:0}.social-main>b{display:block;font-size:12px}.social-main small{display:block;color:var(--muted);font-size:9px;margin-top:4px}.social-btn{border:1px solid rgba(99,230,190,.2);background:rgba(99,230,190,.1);color:var(--accent);border-radius:10px;padding:8px 10px;font-size:10px;font-weight:700}.social-btn.wide{width:100%;margin-top:8px}.social-search{display:flex;gap:7px}.social-search input,.message-box input,.message-box textarea{flex:1;box-sizing:border-box;border:1px solid var(--border);background:#10151e;color:var(--text);border-radius:11px;padding:10px;font-size:11px;outline:none}.message-box{display:flex;flex-direction:column;gap:8px}.message-box textarea{min-height:75px;resize:vertical}.social-meta{color:var(--muted);font-size:10px;padding:9px 0}.social-meta b{color:var(--text)}.message-item{border-top:1px solid var(--border);padding:10px 0;font-size:11px;line-height:1.45}.message-item small{float:right;color:var(--muted);font-size:8px}.social-back{border:0;background:transparent;color:var(--accent);padding:4px 0 12px;font-size:11px}.other-profile{text-align:center;padding:8px}.big-avatar{width:72px;height:72px;margin:0 auto 10px;font-size:34px}.other-profile h3{margin:0 0 4px;font-size:18px}.other-profile>small{color:var(--muted);font-size:10px}.profile-mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:16px 0}.profile-mini-grid>div{padding:10px;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,.025)}.profile-mini-grid b,.profile-mini-grid small{display:block}.profile-mini-grid b{font-size:14px}.profile-mini-grid small{color:var(--muted);font-size:8px;margin-top:3px}.social-actions{display:flex;gap:7px}.social-actions .social-btn{flex:1}.rating-row{display:flex;align-items:center;gap:9px;padding:11px 0;border-top:1px solid var(--border);font-size:11px}.rating-row>b{width:25px;color:var(--muted)}.rating-row span{flex:1}.rating-row strong{color:var(--accent);font-size:10px}
 
 
-/* v0.14.0 prototype menu textures */
+/* v0.14.0 prototype menu textures: the image itself is the complete button */
 .menu.texture-menu{gap:9px}
 .texture-menu-button{
-  min-height:96px;
+  display:block;
+  width:100%;
+  min-width:0;
+  min-height:0;
+  aspect-ratio:283 / 180;
   padding:0;
   overflow:hidden;
   position:relative;
-  border:1px solid rgba(255,255,255,.14);
+  border:0;
+  border-radius:18px;
   background-color:#101722;
   background-repeat:no-repeat;
   background-position:center;
   background-size:100% 100%;
   box-shadow:0 8px 24px rgba(0,0,0,.16);
+  font-size:0;
+  line-height:0;
 }
 .texture-menu-button:active{transform:scale(.975);filter:brightness(.92)}
 .texture-profile{background-image:url("../assets/menu/profile.png")}
@@ -432,5 +439,5 @@ button {
 .texture-players{background-image:url("../assets/menu/players.png")}
 .texture-settings{background-image:url("../assets/menu/settings.png")}
 @media (max-width:360px){
-  .texture-menu-button{min-height:82px}
+  .texture-menu-button{border-radius:14px}
 }
