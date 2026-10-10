@@ -540,50 +540,179 @@ body {
 }
 
 
-/* Player level HUD texture supplied for Life+ */
-.player-info{flex:1;min-width:0}
-.player-level-texture{
-  position:relative;
-  width:100%;
-  max-width:360px;
-  aspect-ratio:1134 / 200;
-  margin-top:3px;
-  background-image:url("../assets/ui/player-level-header.png");
-  background-size:100% 100%;
-  background-repeat:no-repeat;
+/* v0.14.0 Home Mockup Layout — styling only, keep existing game logic */
+:root {
+  --lp-orange: #ff7b20;
+  --lp-blue: #08a9ff;
+  --lp-card: rgba(7, 13, 27, .9);
 }
-.player-xp-track{
-  position:absolute;
-  left:18%;
-  top:16%;
-  width:65%;
-  height:34%;
-  overflow:hidden;
-  border-radius:999px;
-  background:transparent;
+body {
+  background-color: #050913;
+  background-image:
+    linear-gradient(rgba(2, 5, 14, .40), rgba(2, 5, 14, .68)),
+    url("../assets/images/game-background.png");
+  background-size: cover;
+  background-position: center top;
+  background-attachment: fixed;
 }
-.player-xp-fill{
-  height:100%;
-  max-width:100%;
-  border-radius:999px;
-  background:linear-gradient(90deg,#ffb21c,#19d8ff);
-  box-shadow:0 0 8px rgba(0,205,255,.65);
+.topbar {
+  display: flex;
+  align-items: center;
+  position: relative;
+  min-height: 74px;
+  padding: 6px 0;
+  gap: 10px;
+  box-sizing: border-box;
 }
-.player-level-number{
-  position:absolute;
-  left:35%;
-  top:59%;
-  width:11%;
-  height:29%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#fff;
-  font-weight:800;
-  font-size:clamp(10px,2.8vw,15px);
-  text-shadow:0 1px 4px #001020;
+.player {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  min-height: 76px;
+  padding: 8px 54px 8px 56px;
+  gap: 0;
+  border: 2px solid transparent;
+  border-radius: 24px;
+  background:
+    linear-gradient(110deg, rgba(4,9,22,.96), rgba(5,16,34,.82)) padding-box,
+    linear-gradient(100deg, var(--lp-orange), #16233d 24%, var(--lp-blue) 75%, var(--lp-orange)) border-box;
+  box-shadow: 0 0 12px rgba(0,165,255,.22), inset 0 0 14px rgba(0,0,0,.45);
+  box-sizing: border-box;
 }
-.player-level{display:none}
-@media(max-width:380px){
-  .player-level-texture{max-width:260px}
+.avatar {
+  position: absolute;
+  z-index: 3;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid var(--lp-blue);
+  box-shadow: 0 0 10px rgba(0,169,255,.7);
+  object-fit: cover;
+}
+.player-info {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  width: 100%;
+}
+.player-name {
+  display: block;
+  margin: 0 0 5px;
+  line-height: 1.15;
+  color: #fff;
+  font-weight: 800;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.player-level-texture {
+  display: none !important;
+}
+.player-level-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+.player-xp-track {
+  display: block;
+  height: 8px;
+  flex: 1;
+  max-width: 160px;
+  border-radius: 99px;
+  background: rgba(5,10,22,.95);
+  border: 1px solid rgba(160,190,220,.55);
+  overflow: hidden;
+}
+.player-xp-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #007dff, #00d4ff);
+  box-shadow: 0 0 8px #00aaff;
+}
+.notification {
+  position: absolute;
+  z-index: 4;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 16px;
+  border: 1px solid rgba(0,169,255,.45);
+  background: rgba(8,17,34,.92);
+}
+.hero {
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  aspect-ratio: 16 / 7;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 24px;
+  background-image:
+    linear-gradient(rgba(0,0,0,.04), rgba(0,0,0,.08)),
+    url("../assets/images/lifeplus-banner.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0 0 12px rgba(0,169,255,.18);
+  overflow: hidden;
+}
+.hero::after { display: none !important; }
+.hero-content { display: none !important; }
+
+.balance-card, .balance-panel, .balance-box {
+  border: 2px solid transparent;
+  border-radius: 22px;
+  background:
+    linear-gradient(110deg, rgba(5,13,28,.96), rgba(7,24,45,.9)) padding-box,
+    linear-gradient(100deg, var(--lp-orange), #152743 20%, var(--lp-blue), #152743 80%, var(--lp-orange)) border-box;
+  box-shadow: 0 0 10px rgba(0,153,255,.18), inset 0 0 14px rgba(0,0,0,.38);
+}
+.stat-card, .summary-card, .mini-stat {
+  overflow: hidden;
+  border-radius: 18px;
+  border: 2px solid transparent;
+  background-color: rgba(5,10,22,.94);
+  box-shadow: 0 0 9px rgba(0,153,255,.18);
+}
+.menu-grid, .main-menu, .menu-container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.menu-button {
+  position: relative;
+  min-width: 0;
+  min-height: 88px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  background-color: rgba(4,10,22,.92);
+  box-shadow: 0 0 9px rgba(0,153,255,.18);
+  background-size: cover;
+  background-position: center;
+}
+.menu-button:nth-child(odd) {
+  border-color: rgba(255,112,28,.92);
+  box-shadow: 0 0 9px rgba(255,112,28,.28), inset 0 0 10px rgba(0,0,0,.2);
+}
+.menu-button:nth-child(even) {
+  border-color: rgba(0,169,255,.92);
+  box-shadow: 0 0 9px rgba(0,169,255,.28), inset 0 0 10px rgba(0,0,0,.2);
+}
+.menu-button .menu-icon, .menu-button .icon {
+  flex-shrink: 0;
+}
+@media (max-width: 380px) {
+  .topbar { min-height: 66px; }
+  .player { min-height: 68px; padding-left: 52px; padding-right: 48px; }
+  .avatar { width: 38px; height: 38px; left: 6px; }
+  .hero { border-radius: 18px; }
+  .menu-grid, .main-menu, .menu-container { gap: 8px; }
+  .menu-button { min-height: 78px; border-radius: 16px; }
 }
